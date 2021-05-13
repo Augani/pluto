@@ -1,7 +1,8 @@
 import React from 'react';
-import './button.css';
+import './TextField.css';
+import "../../index.css";
 
-export interface ButtonProps {
+export interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   /**
    * Is this the principal call to action on the page?
    */
@@ -10,10 +11,6 @@ export interface ButtonProps {
    * What background color to use
    */
   backgroundColor?: string;
-  /**
-   * How large should the button be?
-   */
-  size?: 'small' | 'medium' | 'large';
   /**
    * Button contents
    */
@@ -27,7 +24,7 @@ export interface ButtonProps {
 /**
  * Primary UI component for user interaction
  */
-export const Button: React.FC<ButtonProps> = ({
+export const TextField: React.FC<TextFieldProps> = ({
   primary = false,
   size = 'medium',
   backgroundColor,
@@ -36,13 +33,9 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
   return (
-    <button
-      type="button"
-      className={['storybook-button', `storybook-button--${size}`, mode].join(' ')}
-      style={{ backgroundColor }}
-      {...props}
-    >
-      {label}
-    </button>
+    <div className=" w-40  outline-none flex flex-col">
+      <label className="text-sm tracking-wide">{label}</label>
+      <input className="h-8 w-full rounded-md border border-gray-600 text-lg tracking-wide px-2 " />
+    </div>
   );
 };
