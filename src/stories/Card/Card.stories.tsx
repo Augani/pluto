@@ -4,7 +4,7 @@ import { Story, Meta } from '@storybook/react';
 import { Card, CardProps } from '@components/Card/Card';
 
 export default {
-  title: 'Gshare/Card',
+  title: 'Pluto/Card',
   component: Card,
   argTypes: {
     backgroundColor: { control: 'color' },

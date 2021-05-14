@@ -1,26 +1,13 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
 
-import { TextField, TextFieldProps } from './TextField';
+import { TextField, TextFieldProps } from '@components/TextField/TextField';
 
 export default {
-  title: 'Gshare/TextField',
+  title: 'Pluto/TextField',
   component: TextField,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
 } as Meta;
 
 const Template: Story<TextFieldProps> = (args) => <TextField {...args} />;
 
 export const Primary = Template.bind({});
-Primary.args = {
-  primary: true,
-  label: 'Button',
-};
-
-export const Secondary = Template.bind({});
-Secondary.args = {
-  label: 'Button',
-};
-
