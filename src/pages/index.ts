@@ -1,6 +1,7 @@
 import Home from './Home';
 import Display from './Display'
-export default {
+const Pages = {
     Home,
     Display
 }
+export default Pages;
