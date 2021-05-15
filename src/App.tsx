@@ -6,10 +6,12 @@ import Pages from "./pages";
 
 function App() {
   return (
-    <Router>
+   <div className="dark:bg-gray-800 w-screen h-screen">
+      <Router>
       <Route exact path="/v/:id" component={Pages.Display} />
       <Route exact path="/" component={Pages.Home} />
     </Router>
+   </div>
   );
 }
 

@@ -2,13 +2,17 @@ import React from 'react';
 import './Card.scss';
 import "../../index.css";
 
-export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface IRepoData {
+  
+}
+
+export interface ICardProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * What background color to use
    */
   backgroundColor?: string;
   /**
-   * Optional click handler
+   * Color of the texts
    */
    fontColor: string;
   /**
@@ -16,23 +20,17 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
    */
   onClick?: () => void;
   /**
-   * Optional click handler
+   * The repository data
    */
-  imageSrc: string;
-  /**
-   * Optional click handler
-   */
-   name: string;
+  repoData: IRepoData;
 }
 
 /**
  * Primary UI component for user interaction
  */
-export const Card: React.FC<CardProps> = ({
+export const Card: React.FC<ICardProps> = ({
   backgroundColor,
   fontColor = 'white',
-  imageSrc,
-  name,
   ...props
 }) => {
   const bgColor = `bg-${backgroundColor}-600`;
@@ -41,7 +39,7 @@ export const Card: React.FC<CardProps> = ({
       <div className="flex flex-col w-full">
           <div className="w-1/2 flex flex-col justify-center items-center">
           <img className="h-16 w-16 object-center border border-gray-900 rounded-full" />
-          <p className="text-lg">{name}</p>
+          <p className="text-lg"></p>
           </div>
       </div>
       <div className="flex flex-col w-full">

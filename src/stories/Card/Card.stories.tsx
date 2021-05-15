@@ -1,7 +1,7 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
 
-import { Card, CardProps } from '@components/Card/Card';
+import { Card, ICardProps } from '../../components/Card/Card';
 
 export default {
   title: 'Pluto/Card',
@@ -11,7 +11,7 @@ export default {
   },
 } as Meta;
 
-const Template: Story<CardProps> = (args) => <Card {...args} />;
+const Template: Story<ICardProps> = (args) => <Card {...args} />;
 
 export const Main = Template.bind({});
 Main.args = {
