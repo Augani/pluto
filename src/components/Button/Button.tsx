@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export interface IButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+export interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * What background color to use
    */
@@ -10,10 +10,6 @@ export interface IButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
    * Button contents
    */
   label: string;
-  /**
-   * Optional click handler
-   */
-  onClick?: () => void;
   /**
    * Different modes of the button
    */

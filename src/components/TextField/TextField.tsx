@@ -1,6 +1,7 @@
 import React from "react";
 import "../../index.css";
 import Status from "@components/Status/Status";
+import { generateString } from "@utils/Hash";
 
 export interface ITextFieldProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -19,7 +20,7 @@ export interface ITextFieldProps
 }
 
 export interface ISelectFieldProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   /**
    * Button text
    */
@@ -28,6 +29,10 @@ export interface ISelectFieldProps
    * Optional click handler
    */
   onClick?: () => void;
+  /**
+   * Options of selectable values
+   */
+   options?: string[];
 }
 
 export const TextField: React.FC<ITextFieldProps> = ({
@@ -57,17 +62,35 @@ export const TextField: React.FC<ITextFieldProps> = ({
 export const SelectField: React.FC<ISelectFieldProps> = ({
   label,
   className,
+  options,
   ...props
 }) => {
+  const listTitle = generateString(6);
   return (
     <div className="w-full flex flex-col my-2">
       <label className="tracking-wide text-sm dark:text-gray-100">
         {label}
       </label>
-      <div
+      <input
+        list={listTitle}
         className={`${className} mt-1 px-4 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm text-lg border dark:text-gray-100 border-gray-300 dark:border-gray-100 h-12 focus:outline-none bg-gray-50 dark:bg-transparent md:text-2xl rounded-md lg:mb-0`}
         {...props}
-      ></div>
+      />
+      {options && <DataList options={options} label={listTitle} />}
     </div>
   );
 };
+
+
+const DataList: React.FC<ISelectFieldProps> = ({
+  label,
+  options
+})=> {
+  return (
+    <datalist id={label}>
+      {options && options.map((p:string) =>{
+        return <option value={p}/>;
+      })}
+    </datalist>
+  )
+}
