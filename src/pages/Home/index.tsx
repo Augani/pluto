@@ -3,11 +3,15 @@ import Logo from "../../images/logo.svg";
 import Share from "../../images/share.svg";
 import { TextField, SelectField } from "@components/TextField/TextField";
 import { Button } from "@components/Button/Button";
-import { Http } from "@utils/Api";
-import { COLORS } from "@utils/Theme";
-import { generateString } from "@utils/Hash";
+import Utils from "@utils/index";
+import { Card } from "@components/Card/Card";
 
 export interface IHomeProps {}
+
+const initialFormData = {
+  repo: "",
+  theme: "Gray",
+};
 
 export default function Home(props: IHomeProps) {
   const [username, setUsername] = React.useState("");
@@ -15,23 +19,36 @@ export default function Home(props: IHomeProps) {
   const [validUser, setValidUser] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [icon, setIcon] = React.useState("random");
+  const [formData, setFormData] = React.useState(initialFormData);
+  const [linkGenerated, setLinkGenerated] = React.useState("");
 
   const usernameChanged = (event: React.FormEvent<HTMLInputElement>) => {
     let name = event.currentTarget.value;
     setUsername(name);
   };
 
-  const fetchRepos = async (username: string) => {
-    let rep = await Http(`https://api.github.com/users/${username}/repos`);
-    let repNames = rep.map((rp: any) => {
-      return rp.name;
+  const valueChanged = (event: React.FormEvent<HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [event.currentTarget.name]: event.currentTarget.value.trim(),
     });
-    setRepos(repNames);
+  };
+
+  const fetchRepos = async (username: string) => {
+    let rep = await Utils.Api.Http(
+      `https://api.github.com/users/${username}/repos`
+    );
+    if(rep && rep.length){
+      let repNames = rep.map((rp: any) => {
+        return rp.name;
+      });
+      setRepos(repNames);
+    }
   };
 
   const generateIcon = () => {
-    let randString = generateString(7);
-    setIcon(randString);
+    let randString = Utils.Hash.generateString(7);
+    setIcon(randString.trim());
   };
 
   React.useEffect(() => {
@@ -46,16 +63,25 @@ export default function Home(props: IHomeProps) {
     fetchRepos(username);
   }, [username, repos.length]);
 
-  const submitForm = (event: React.FormEvent<HTMLFormElement>)=>{
+  const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
-  }
+    let data = {
+      user: username,
+      repo: formData.repo,
+      theme: formData.theme,
+      link: icon,
+    };
+    let response = await Utils.Db.saveRepo(data);
+    if (Array.isArray(response)) {
+      setLinkGenerated(response[0].link);
+    }
+  };
 
   return (
     <div className="h-full w-full flex flex-col items-center overflow-y-auto">
       <nav className="flex flex-row items-center justify-between px-2 lg:px-10 w-full h-32 lg:absolute">
         <img alt="logo" src={Logo} className="lg:w-52 xl:w-56 w-32" />
-        <Button variant="secondary" label="Buy me coffee" />
+        <Button variant="secondary" label="Buy me coffee" className="text-gray-50" />
       </nav>
       <main className="w-full lg:w-2/3 lg:h-full justify-center items-center flex flex-col lg:grid grid-cols-2 place-items-center">
         <header className="w-full h-full flex flex-col justify-center items-center">
@@ -64,24 +90,34 @@ export default function Home(props: IHomeProps) {
             Generate shareable links <br /> for your repos
           </h3>
         </header>
-        <form onSubmit={submitForm} className="md:w-1/2 lg:w-2/3 w-3/4 flex flex-col h-full justify-center items-center py-6 lg:py-0">
+        <form
+          onSubmit={submitForm}
+          className="md:w-1/2 lg:w-2/3 w-3/4 flex flex-col h-full justify-center items-center py-6 lg:py-0"
+        >
           <TextField
-          required
+            required
             onChange={usernameChanged}
             status={validUser}
             loading={loading}
+            name="username"
             label="Your github username"
           />
           <SelectField
             required
+            onChange={valueChanged}
+            name="repo"
             options={repos}
+            restrict
             label="Select your repo"
             className="capitalize"
           />
           <SelectField
-          required
+            onChange={valueChanged}
+            required
+            restrict
+            name="theme"
             label="Select theme"
-            options={COLORS}
+            options={Utils.Theme.COLORS}
             className="capitalize"
           />
           <div className="flex flex-row h-12 w-full mb-4">
@@ -94,9 +130,16 @@ export default function Home(props: IHomeProps) {
               variant="secondary"
               onClick={generateIcon}
               label="Generate Icon"
+              className="text-gray-50"
             />
           </div>
-          <Button type="submit" label="Generate Link" className="w-full mt-2" />
+          <Button type="submit" label="Generate Link" className="w-full mt-2 text-gray-50" />
+          {linkGenerated && (
+            <Card className="w-full mt-2 bg-purple-800 py-4 rounded-md flex flex-col items-center">
+              <a rel="noreferrer" href={`/r/${linkGenerated}`} target="_blank" className="text-sm font-bold select-all text-white text-center">View repo</a>
+              
+            </Card>
+          )}
         </form>
       </main>
     </div>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
 
-import { TextField, ITextFieldProps, SelectField } from '../../components/TextField/TextField';
+import { TextField, SelectField } from '../../components/TextField/TextField';
+import {ITextFieldProps, ISuggestionInputProps, ISelectFieldProps} from '../../components/TextField/types'
 
 export default {
   title: 'Pluto/TextField',
@@ -9,8 +10,24 @@ export default {
 } as Meta;
 
 const Template: Story<ITextFieldProps> = (args) => <TextField {...args} />;
+const SelectTemplate: Story<ISelectFieldProps> = (args) => <SelectField {...args} />;
 
-export const Primary = Template.bind({});
-Primary.args = {
-  className: "w-40"
+export const Simple = Template.bind({});
+export const Select = SelectTemplate.bind({});
+export const SelectFree = SelectTemplate.bind({});
+Simple.args = {
+  className: "w-32"
 }
+
+Select.args = {
+  className: "w-32",
+  restrict: true,
+  options: ["Hello", "Hi", "Hey"]
+}
+
+SelectFree.args = {
+  className: "w-32",
+  options: ["Hello", "Hi", "Hey"]
+}
+
+

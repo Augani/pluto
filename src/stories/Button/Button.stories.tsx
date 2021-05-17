@@ -14,11 +14,14 @@ export default {
 const Template: Story<IButtonProps> = (args) => <Button {...args} />;
 
 export const Primary = Template.bind({});
+export const Secondary  = Template.bind({});
 Primary.args = {
   label: 'Primary Button',
+  className: 'text-white'
 };
 
-Primary.args = {
+Secondary.args = {
   label: 'Secondary Button',
-  variant: 'secondary'
+  variant: 'secondary',
+  className: 'text-white'
 };

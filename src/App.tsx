@@ -7,7 +7,7 @@ function App() {
   return (
    <div className="dark:bg-gray-800 w-screen h-screen">
       <Router>
-      <Route exact path="/v/:id" component={Pages.Display} />
+      <Route exact path="/r/:id" component={Pages.Display} />
       <Route exact path="/" component={Pages.Home} />
     </Router>
    </div>
