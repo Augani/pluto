@@ -63,6 +63,10 @@ export default function Home(props: IHomeProps) {
     fetchRepos(username);
   }, [username, repos.length]);
 
+  React.useEffect(()=>{
+    generateIcon();
+  }, [])
+
   const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     let data = {
