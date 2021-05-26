@@ -38,7 +38,6 @@ const Display: React.FC<IDisplayProps> = (props: IDisplayProps) => {
     if (id) {
       Utils.Db.getRepo(id)
         .then((b: any) => {
-          console.log(b)
           if(!b.length)return setError(true);
           setUser(b[0]);
           fetchRepo(b[0].repo, b[0].user);
